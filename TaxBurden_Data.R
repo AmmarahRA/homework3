@@ -22,7 +22,7 @@ cig.data <- cig.data %>%
          measure)
 
 final.data <- pivot_wider(cig.data, 
-                          id_cols = c("state","Year","measure"),
+                          id_cols = c("state","Year"),
                           names_from = "measure",
                           values_from = "value") %>%
   arrange(state, Year)
