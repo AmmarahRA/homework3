@@ -28,7 +28,6 @@ final.data <- pivot_wider(cig.data,
   arrange(state, Year)
 
 
-
 # Clean CPI data ----------------------------------------------------------
 cpi.data <- pivot_longer(cpi.data, 
                          cols=c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"),
@@ -37,7 +36,6 @@ cpi.data <- pivot_longer(cpi.data,
 cpi.data <- cpi.data %>%
   group_by(Year) %>%
   summarize(index=mean(index, na.rm=TRUE))
-
 
 
 # Form final dataset ------------------------------------------------------
