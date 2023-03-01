@@ -38,6 +38,7 @@ cpi.data <- cpi.data %>%
   summarize(index=mean(index, na.rm=TRUE))
 
 
+
 # Form final dataset ------------------------------------------------------
 # adjust to 2012 dollars
 final.data <- final.data %>%
