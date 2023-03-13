@@ -21,7 +21,7 @@ tab_1 <- final.data2%>% filter(Year <= 1985) %>%
   summarize(prop = sum(tax_change == 1)/n())
 
 fig_1<- ggplot(tab_1, aes(Year, prop)) + 
-  geom_bar(stat = 'identity', colour="black") + 
+  geom_bar(stat = 'identity', colour="black", fill="red") + 
   labs(title = "Proportion of States with Change in Tax, 1970-1985", x = "Year", y = "Proportion of States") +
   theme_bw()
 
