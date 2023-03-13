@@ -136,11 +136,39 @@ The average cigarette sales fell more drastically between 1970 and 2018 for the 
 # Estimate ATEs
 
 ## Question 1 
+```{r, include=FALSE}
+data_6 <- final.data %>% filter(Year %in% c(1970:1990))
+```
+```{r, include=FALSE}
+data_6$log_sales <- log(data_6$sales_per_capita)
+data_6$log_price <- log(data_6$cost_per_pack)
+
+```
+```{r, include=FALSE}
+reg6<- lm(formula = log_price ~ log_sales, data = data_6)
+```
+```{r}
+reg6
+```
+
+The regression shows that cigarette demand has an elasticity of -0.7335, which is inelestic, suggesting that cigarette demand is less responsive to changes in price.
 
 ## Question 2
+```{r, include=FALSE}
+data_7<- data_6 %>% mutate(total_tax= data_6$tax_dollar + data_6$tax_state)
+  
+```
+```{r, include=FALSE}
+iv7 <- ivreg(log_price ~ log_sales | total_tax, data = data_7)
+```
+```{r}
+iv7
+```
+The IV regression looks wrong so I am unable to intepret results properly. 
 
 ## Question 3
-
+need to fix previous errors to answer
 ## Question 4
-
+need to fix previous errors to answer
 ## Question 5
+need to fix previous errors to answer
