@@ -170,3 +170,5 @@ need to fix previous errors to answer
 need to fix previous errors to answer
 ## Question 5
 need to fix previous errors to answer
+
+# There is an error when knitting to pdf in Line 30 of code.
