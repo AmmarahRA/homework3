@@ -11,7 +11,7 @@ output:
 ---
 
 ```{r=setup, include=FALSE}
-pacman::p_load(tidyverse, ggplot2, dplyr, lubridate, stringr, readxl, data.table, gdata, readr,scales, kableExtra, lemon, imputeTS)
+pacman::p_load(tidyverse, ggplot2, dplyr, lubridate, stringr, readxl, data.table, gdata, readr,scales, kableExtra, lemon, imputeTS, ivreg)
 ```
 
 ```{r, warning = FALSE, echo = FALSE, message = FALSE}
@@ -28,9 +28,7 @@ final.data <- readRDS("data/output/TaxBurden_Data.rds")
 
 ```{r, include=FALSE}
 states <- unique(final.data$state) 
-```
 
-```{r, include=FALSE}
 states_list <- list()
 for (i in states) {
   state_data <- filter(final.data, state == i)
