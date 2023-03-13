@@ -1,4 +1,5 @@
-pacman::p_load(tidyverse, ggplot2, dplyr, lubridate, stringr, readxl, data.table, gdata)
+install.packages("ivreg")
+pacman::p_load(tidyverse, ggplot2, dplyr, lubridate, stringr, readxl, data.table, gdata, ivreg)
 final.data <- readRDS("data/output/TaxBurden_Data.rds")
 
 #Summarise the Data
@@ -80,3 +81,17 @@ fig_4
 
 #6
 
+data_6 <- final.data %>% filter(Year %in% c(1970:1990))
+
+data_6$log_sales <- log(data_6$sales_per_capita)
+data_6$log_price <- log(data_6$cost_per_pack)
+
+reg6<- lm(formula = log_price ~ log_sales, data = data_6)
+reg6
+
+#7
+
+data_7<- data_6 %>% mutate(total_tax= data_6$tax_dollar + data_6$tax_state)
+  
+iv7 <- ivreg(log_price ~ log_sales | total_tax, data = data_7)
+iv7
