@@ -1,25 +1,18 @@
 ---
-title: 'Homework 2 - Research in Health Economics'
+title: 'Homework 3 - Research in Health Economics'
 author: "Ammarah Ahmed"
 date: ""
-header-includes:
-  - \usepackage{booktabs}
-output: 
-  bookdown::pdf_document2:
-    fig_caption: yes
-    toc: false
+
 ---
 
 ```{r=setup, include=FALSE}
-pacman::p_load(tidyverse, ggplot2, dplyr, lubridate, stringr, readxl, data.table, gdata, readr,scales, kableExtra, lemon, imputeTS, ivreg)
-```
+knitr::opts_chunk$set(echo = TRUE, warning=FALSE, message=FALSE)
 
-```{r, warning = FALSE, echo = FALSE, message = FALSE}
-knitr::opts_chunk$set(echo = FALSE, message=FALSE, warning = FALSE, fig.width = 16/2, fig.height = 9/2, tidy.opts=list(width.cutoff=60), tidy=TRUE)
+pacman::p_load(Matching, tidyverse, ggplot2, dplyr, lubridate, stringr, readxl, readr, data.table, gdata, scales, kableExtra, modelsummary, fixest, imputeTS)
 ```
 
 ```{r, include=FALSE}
-final.data <- readRDS("data/output/TaxBurden_Data.rds")
+load("Hw3_workspace.Rdata")
 ```
 
 # Summarise the Data
@@ -33,6 +26,7 @@ final.data<- final.data %>% group_by(state) %>% arrange(state, Year) %>%
          price_cpi = cost_per_pack*(229.5939/index) ,
          tax_cpi = tax_dollar*(229.5939/index)) 
 ```
+
 
 ```{r, include=FALSE}
 fig_1<- final.data %>% group_by(Year) %>% filter(Year <=1985) %>%
