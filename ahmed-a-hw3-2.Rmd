@@ -5,14 +5,20 @@ date: ""
 
 ---
 
-```{r=setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning=FALSE, message=FALSE)
-
+```{r setup, include=FALSE}
 pacman::p_load(Matching, tidyverse, ggplot2, dplyr, lubridate, stringr, readxl, readr, data.table, gdata, scales, kableExtra, modelsummary, fixest, imputeTS)
+```
+
+```{r, warning = FALSE, echo = FALSE, message = FALSE}
+knitr::opts_chunk$set(echo = FALSE, message=FALSE, warning = FALSE)
 ```
 
 ```{r, include=FALSE}
 load("Hw3_workspace.Rdata")
+```
+
+```{r, include=FALSE}
+final.data <- readRDS("data/output/TaxBurden_Data.rds")
 ```
 
 # Summarise the Data
