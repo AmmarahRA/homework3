@@ -135,6 +135,6 @@ step_two_9<- lm(log_sales ~ tax_cpi, data = data_9)
 summary(step_two_9)
 
 
-
+save.image("Hw3_workpsace.Rdata")
 
 
