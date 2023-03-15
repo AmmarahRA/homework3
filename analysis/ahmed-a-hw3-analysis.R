@@ -32,10 +32,8 @@ fig_2 <- ggplot(tab_2, aes(x = Year)) +
   geom_line(aes(Year, avg_price), colour = "red") + 
   geom_line(aes(Year, avg_tax), colour = 'blue') +
   labs(title = "Average Price and Tax from 1970-2018", x = "Year", y = "Average Price and Tax") +
-  geom_text(data = tab_2 %>% filter(Year == 2012),
-            aes())
   theme_bw()
-
+  
 fig_2
 
 #3
@@ -76,8 +74,16 @@ fig_4 <- ggplot(tab_4, aes(Year, avg_sales))+
 fig_4
 
 #5
-#grpah avg sales for both groups in one graph 
-#fig_5 <- 
+
+data_5 <- merge(tab_3, tab_4, by = "Year")
+
+fig_5 <- ggplot(data_5, aes(x = Year)) +
+  geom_line(aes(Year, avg_sales.x), colour = "red") +
+  geom_line(aes(Year, avg_sales.y), colour = "blue") +
+  labs(title = "Average Sales in States with Highest and Lowest Tax Increase", x = "Year", y = "Average Sales per Capita") +
+  theme_bw()
+
+fig_5
 
 #6
 
@@ -87,18 +93,46 @@ data_6$log_sales <- log(data_6$sales_per_capita)
 data_6$log_price <- log(data_6$price_cpi)
 
 reg6<- lm(formula = log_price ~ log_sales, data = data_6)
-reg6
+summary(reg6)
 
 #7
 iv7 <- feols(log_sales ~ 1 | log_price ~ tax_cpi, data = data_6)
-iv7
+summary(iv7)
 
 #8
 
-#first stage is lnprice on total tax
-# reducded form is ln sales on total tax
+#first stage 
 
+step_one<- lm(log_price ~ tax_cpi, data = data_6)
+summary(step_one)
+  
+#reduced form
 
+step_two<- lm(log_sales ~ tax_cpi, data = data_6)
+summary(step_two)
+
+#9 
+
+data_9 <- final.data %>% filter(Year %in% c(1991:2015))
+
+data_9$log_sales <- log(data_9$sales_per_capita)
+data_9$log_price <- log(data_9$price_cpi)
+
+reg9 <- lm(formula = log_price ~ log_sales, data = data_9)
+summary(reg9)
+
+iv9 <- feols(log_sales ~ 1 | log_price ~ tax_cpi, data = data_9)
+summary(iv9)
+
+#first stage 
+
+step_one_9<- lm(log_price ~ tax_cpi, data = data_9)
+summary(step_one_9)
+
+#reduced form
+
+step_two_9<- lm(log_sales ~ tax_cpi, data = data_9)
+summary(step_two_9)
 
 
 
