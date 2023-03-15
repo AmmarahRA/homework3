@@ -1,5 +1,5 @@
 install.packages("fixest")
-pacman::p_load(tidyverse, ggplot2, dplyr, lubridate, stringr, readxl, data.table, gdata, fixest)
+pacman::p_load(tidyverse, ggplot2, dplyr, lubridate, stringr, readxl, data.table, gdata, fixest, modelsummary)
 final.data <- readRDS("data/output/TaxBurden_Data.rds")
 
 #Summarise the Data
@@ -32,6 +32,8 @@ fig_2 <- ggplot(tab_2, aes(x = Year)) +
   geom_line(aes(Year, avg_price), colour = "red") + 
   geom_line(aes(Year, avg_tax), colour = 'blue') +
   labs(title = "Average Price and Tax from 1970-2018", x = "Year", y = "Average Price and Tax") +
+  annotate("text", x = 2016, y = 7.2, label = "Average Price", colour = "black", size = 3) +
+  annotate("text", x = 2016, y = 3.2, label = "Average Tax", colour = "black", size = 3) +
   theme_bw()
   
 fig_2
@@ -81,6 +83,8 @@ fig_5 <- ggplot(data_5, aes(x = Year)) +
   geom_line(aes(Year, avg_sales.x), colour = "red") +
   geom_line(aes(Year, avg_sales.y), colour = "blue") +
   labs(title = "Average Sales in States with Highest and Lowest Tax Increase", x = "Year", y = "Average Sales per Capita") +
+  annotate("text", x = 2016, y = 7.2, label = "Top 5 States", colour = "black", size = 3) +
+  annotate("text", x = 2016, y = 9.2, label = "Bottom 5 States", colour = "black", size = 3) +
   theme_bw()
 
 fig_5
@@ -92,7 +96,7 @@ data_6 <- final.data %>% filter(Year %in% c(1970:1990))
 data_6$log_sales <- log(data_6$sales_per_capita)
 data_6$log_price <- log(data_6$price_cpi)
 
-reg6<- lm(formula = log_price ~ log_sales, data = data_6)
+reg6<- lm(formula = log_sales ~ log_price, data = data_6)
 summary(reg6)
 
 #7
@@ -118,7 +122,7 @@ data_9 <- final.data %>% filter(Year %in% c(1991:2015))
 data_9$log_sales <- log(data_9$sales_per_capita)
 data_9$log_price <- log(data_9$price_cpi)
 
-reg9 <- lm(formula = log_price ~ log_sales, data = data_9)
+reg9 <- lm(formula = log_sales ~ log_price, data = data_9)
 summary(reg9)
 
 iv9 <- feols(log_sales ~ 1 | log_price ~ tax_cpi, data = data_9)
@@ -134,6 +138,12 @@ summary(step_one_9)
 step_two_9<- lm(log_sales ~ tax_cpi, data = data_9)
 summary(step_two_9)
 
+modelsummary(list("OLS" = reg6, "IV" = iv7, "OLS" = reg9, "IV" = iv9),
+             title = "Point Estimates",
+             coef_map = c('log_price'="Log Price",
+                          'fit_log_price' = "Log Price"),
+             gof_map = c("nobs", "r.squared"),
+             output = "kableExtra")
 
 save.image("Hw3_workspace.Rdata")
 
