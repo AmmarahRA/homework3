@@ -1,0 +1,215 @@
+---
+title: "Homework 3 - Research in Health Economics"
+author: "Ammarah Ahmed"
+date: ''
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+pacman::p_load(Matching, tidyverse, ggplot2, dplyr, lubridate, stringr, readxl, readr, data.table, gdata, scales, kableExtra, modelsummary, fixest, imputeTS)
+```
+
+```{r, warning = FALSE, echo = FALSE, message = FALSE}
+knitr::opts_chunk$set(echo = FALSE, message=FALSE, warning = FALSE)
+```
+
+```{r, include=FALSE}
+load("Hw3_workspace.Rdata")
+```
+
+```{r, include=FALSE}
+final.data <- readRDS("data/output/TaxBurden_Data.rds")
+```
+
+# Summarise the Data
+
+## Question 1
+
+```{r, include=FALSE}
+final.data<- final.data %>% group_by(state) %>% arrange(state, Year) %>%
+  mutate(tax_change = tax_state - lag(tax_state),
+         tax_change_d = ifelse(tax_change ==0,0,1),
+         price_cpi = cost_per_pack*(229.5939/index) ,
+         tax_cpi = tax_dollar*(229.5939/index)) 
+```
+
+
+```{r, include=FALSE}
+fig_1<- final.data %>% group_by(Year) %>% filter(Year <=1985) %>%
+  summarise(mean_change=mean(tax_change_d)) %>% 
+  ggplot(aes(x = as.factor(Year), y=mean_change)) + 
+  geom_bar(stat = 'identity', colour="black", fill="red") + 
+  labs(title = "Proportion of States with Change in Tax, 1970-1985", x = "Year", y = "Proportion of States") +
+  ylim(0,1) +
+  theme_bw()
+```
+
+```{r}
+fig_1
+```
+
+## Question 2
+
+```{r, include=FALSE}
+tab_2 <- final.data %>% filter(Year <= 2018) %>% 
+  group_by(Year)%>%
+  summarise(avg_price = mean(price_cpi), avg_tax = mean(tax_cpi))
+```
+```{r, include=FALSE}
+fig_2 <- ggplot(tab_2, aes(x = Year)) + 
+  geom_line(aes(Year, avg_price), colour = "red") + 
+  geom_line(aes(Year, avg_tax), colour = 'blue') +
+  labs(title = "Average Price and Tax from 1970-2018", x = "Year", y = "Average Price and Tax") +
+  annotate("text", x = 2016, y = 7.2, label = "Average Price", colour = "black", size = 3) +
+  annotate("text", x = 2016, y = 3.2, label = "Average Tax", colour = "black", size = 3) +
+  theme_bw()
+```
+
+```{r}
+fig_2
+```
+
+## Question 3
+
+```{r, include=FALSE}
+cig_data_diff <- final.data %>%
+  group_by(state) %>%
+  summarise(price_diff = price_cpi[Year == mean(2018)] - price_cpi[Year == mean(1970)]) %>%
+  arrange(desc(price_diff))
+```
+```{r, include=FALSE}
+top_5 <- cig_data_diff %>%
+  slice(1:5)
+```
+```{r, include=FALSE}
+tab_3<- final.data %>% filter (state %in% top_5$state & Year %in% c(1970:2018))%>% 
+  group_by(Year, state)%>% 
+  summarize(avg_sales = mean(sales_per_capita))
+```
+```{r, include=FALSE}
+fig_3 <- ggplot(tab_3, aes(Year, avg_sales))+
+  geom_line(aes(color = state))+
+  labs(title = "Average Sales per Capita", x = "Year",y = "Average Sales per Capita")+
+  theme_bw()
+```
+
+```{r}
+fig_3
+```
+
+## Question 4
+
+```{r, include=FALSE}
+bottom_5 <- cig_data_diff %>%
+  slice_min(price_diff, n = 5, with_ties = FALSE)
+```
+```{r, include=FALSE}
+tab_4<- final.data %>% filter (state %in% bottom_5$state & Year %in% c(1970:2018))%>% 
+  group_by(Year, state)%>% 
+  summarize(avg_sales = mean(sales_per_capita))
+```
+```{r, include=FALSE}
+fig_4 <- ggplot(tab_4, aes(Year, avg_sales))+
+  geom_line(aes(color = state))+
+  labs(title = "Average Sales per Capita", x = "Year",y = "Average Sales per Capita")+
+  theme_bw()
+```
+
+```{r}
+fig_4
+```
+
+## Question 5
+
+```{r, include=FALSE}
+data_5 <- merge(tab_3, tab_4, by = "Year")
+```
+```{r, include=FALSE}
+fig_5 <- ggplot(data_5, aes(x = Year)) +
+  geom_line(aes(Year, avg_sales.x), colour = "red") +
+  geom_line(aes(Year, avg_sales.y), colour = "blue") +
+  labs(title = "Average Sales in States with Highest and Lowest Tax Increase", x = "Year", y = "Average Sales per Capita") +
+  theme_bw()
+```
+
+```{r}
+fig_5
+```
+
+# Estimate ATEs
+
+## Question 1 
+```{r, include=FALSE}
+data_6 <- final.data %>% filter(Year %in% c(1970:1990))
+```
+```{r, include=FALSE}
+data_6$log_sales <- log(data_6$sales_per_capita)
+data_6$log_price <- log(data_6$price_cpi)
+
+```
+```{r, include=FALSE}
+reg6<- lm(formula = log_sales ~ log_price, data = data_6)
+```
+
+The regression shows that cigarette demand has an elasticity of `r reg6$log_sales` , which is inelestic, suggesting that cigarette demand is less responsive to changes in price.
+
+## Question 2
+
+```{r, include=FALSE}
+iv7 <- feols(log_sales ~ 1 | log_price ~ tax_cpi, data = data_6)
+```
+
+The IV regression shows that cigarette demand has a price elasticity of `r iv7$fit_log_price` whihc is inelastic but it is more elastic compared to the previous regression without an instrument. 
+
+## Question 3
+
+```{r, include=FALSE}
+step_one<- lm(log_price ~ tax_cpi, data = data_6)
+```
+
+```{r, include=FALSE}
+step_two<- lm(log_sales ~ tax_cpi, data = data_6)
+```
+
+## Question 4
+
+```{r, include=FALSE}
+data_9 <- final.data %>% filter(Year %in% c(1991:2015))
+```
+```{r, include=FALSE}
+data_9$log_sales <- log(data_9$sales_per_capita)
+data_9$log_price <- log(data_9$price_cpi)
+```
+
+```{r, include=FALSE}
+reg9 <- lm(formula = log_sales ~ log_price, data = data_9)
+```
+
+```{r, include=FALSE}
+iv9 <- feols(log_sales ~ 1 | log_price ~ tax_cpi, data = data_9)
+```
+
+```{r, include=FALSE}
+step_one_9<- lm(log_price ~ tax_cpi, data = data_9)
+```
+
+```{r, include=FALSE}
+step_two_9<- lm(log_sales ~ tax_cpi, data = data_9)
+```
+
+```{r}
+modelsummary(list("OLS" = reg6, "IV" = iv7, "OLS" = reg9, "IV" = iv9),
+             title = "Elasticity Estimates",
+             coef_map = c('log_price'="Log Price",
+                          'fit_log_price' = "Log Price"),
+             gof_map = list(list("raw" = "nobs", "clean"="N", "fmt" = 0),
+                            list("raw"="r.squared", "clean"="R<sup>2</sup>", "fmt" =2)),
+            output = "kableExtra") %>% 
+               add_header_above(c(" " =1, "1970 - 1990" = 2, "1991 - 2015" = 2))
+          
+```
+
+## Question 5
+
+The results from regression of log sales on log prices from 1991-2015 show an elasticity of `r reg9$log_sales` which is inelastic but less inelastic compared to the results from 1970-1990. The IV regression for 1991-2015 show an elasticity of `r iv9$fit_log_price` which is elastic. These results indicate that the overall demand for cigarettes have become more elastic in 1991 to 2015 compared to in 1970-1990, indicating a greater responsiveness in quantity demanded due to a change in price. 
+
