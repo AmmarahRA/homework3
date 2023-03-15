@@ -139,11 +139,12 @@ step_two_9<- lm(log_sales ~ tax_cpi, data = data_9)
 summary(step_two_9)
 
 modelsummary(list("OLS" = reg6, "IV" = iv7, "OLS" = reg9, "IV" = iv9),
-             title = "Point Estimates",
+             title = "Elasticity Estimates",
              coef_map = c('log_price'="Log Price",
                           'fit_log_price' = "Log Price"),
-             gof_map = c("nobs", "r.squared"),
-             output = "kableExtra")
+             gof_map = list(list("raw" = "nobs", "clean"="N", "fmt" = 0),
+                            list("raw"="r.squared", "clean"="R<sup>2</sup>", "fmt" =2)) %>% 
+  add_header_above(c(" " =1, "1970 - 1990" = 2, "1991 - 2015" = 2)))
 
 save.image("Hw3_workspace.Rdata")
 
