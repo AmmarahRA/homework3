@@ -173,7 +173,7 @@ reg6table<- modelsummary(list("OLS" = reg6),
 reg6table
 ```
 
-The regression from shows that cigarette demand has an elasticity of `r round(reg6$coefficients[2],3)` , which is inelestic, suggesting that cigarette demand is less responsive to changes in price.
+The regression shows that cigarette demand has an elasticity of `r round(reg6$coefficients[2],3)` , which is inelestic, suggesting that cigarette demand is less responsive to changes in price.
 
 ## Question 2
 
@@ -194,7 +194,7 @@ iv7table<- modelsummary(list("IV" = iv7),
 iv7table
 ```
 
-The IV regression from shows that cigarette demand has a price elasticity of `r round(iv7$coefficients[2],3)` which is inelastic. However, it is more inelastic compared to the previous regression without an instrument, suggesting that demand is even less responsive to price changes.
+The IV regression shows that cigarette demand has a price elasticity of `r round(iv7$coefficients[2],3)` which is inelastic. However, it is more inelastic compared to the previous regression without an instrument, suggesting that demand is even less responsive to price changes.
 
 \newpage 
 
