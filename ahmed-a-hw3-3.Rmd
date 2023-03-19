@@ -178,7 +178,7 @@ The regression from Table \@ref(tab:reg6table) shows that cigarette demand has a
 iv7 <- feols(log_sales ~ 1 | log_price ~ tax_cpi, data = data_6)
 ```
 
-```{r iv7table, include=TRUE, eval=TRUE, echo=False}
+```{r iv7table, include=TRUE, eval=TRUE, echo=F}
 modelsummary(list("IV" = iv7),
              title = "Elasticity Estimates 1970-1990",
              coef_map = c('fit_log_price' = "Log Price"),
@@ -188,7 +188,9 @@ modelsummary(list("IV" = iv7),
   kable_styling(latex_options = c("hold_position"))
 ```
 
-The IV regression from Table \@ref(tab:iv7table) shows that cigarette demand has a price elasticity of `r format(iv7$fit_log_price, big.mark=",")` which is inelastic. However, it is more inelastic compared to the previous regression without an instrument, suggesting that demand is even less responsive to price changes.
+The IV regression from Table \@ref(tab:iv7table) shows that cigarette demand has a price elasticity of `r format(iv7$fit_log_price)` which is inelastic. However, it is more inelastic compared to the previous regression without an instrument, suggesting that demand is even less responsive to price changes.
+
+\newpage 
 
 ## Question 3
 
@@ -259,9 +261,9 @@ modelsummary(list("First Stage" = step_one_9, "Reduced Form" = step_two_9),
 
 ## Question 5
 
-The results from all the ATE questions are presented in Table \@ref(tab:coefftable) and \@ref(tab:coefftab2).The results from regression of log sales on log prices from 1991-2015 show an elasticity of `r reg9$log_sales` which is more elastic compared to the results from 1970-1990. The IV regression for 1991-2015 show an elasticity of `r iv9$fit_log_price` which is elastic. These results indicate that the overall demand for cigarettes have become more elastic in 1991 to 2015 compared to in 1970-1990, indicating a greater responsiveness in quantity demanded due to a change in price. 
+The results from all the ATE questions are presented in Table \@ref(tab:coeftable) and \@ref(tab:coeftab2).The results from regression of log sales on log prices from 1991-2015 show an elasticity of `r reg9$log_sales` which is more elastic compared to the results from 1970-1990. The IV regression for 1991-2015 show an elasticity of `r iv9$fit_log_price` which is elastic. These results indicate that the overall demand for cigarettes have become more elastic in 1991 to 2015 compared to in 1970-1990, indicating a greater responsiveness in quantity demanded due to a change in price. 
 
-```{r coefftable, include=TRUE, eval=TRUE, echo=F}
+```{r coefftable, echo=F}
 modelsummary(list("OLS" = reg6, "IV" = iv7, "OLS" = reg9, "IV" = iv9),
              title = "Elasticity Estimates",
              coef_map = c('log_price'="Log Price",
@@ -274,7 +276,7 @@ modelsummary(list("OLS" = reg6, "IV" = iv7, "OLS" = reg9, "IV" = iv9),
           
 ```
 
-```{r coefftab2, include=TRUE, eval=TRUE, echo=F}
+```{r coefftab2, echo=F}
 modelsummary(list("First Stage" = step_one, "Reduced Form" = step_two, "First Stage" = step_one_9, "Reduced Form" = step_two_9),
              title = "First Stage and Reduced Form Estimates",
              coef_map = c('tax_cpi'="Log Tax"),
