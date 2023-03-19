@@ -178,7 +178,7 @@ The regression from Table \@ref(tab:reg6table) shows that cigarette demand has a
 iv7 <- feols(log_sales ~ 1 | log_price ~ tax_cpi, data = data_6)
 ```
 
-```{r iv7table, echo=FALSE}
+```{r iv7table, include=TRUE, eval=TRUE, echo=False}
 modelsummary(list("IV" = iv7),
              title = "Elasticity Estimates 1970-1990",
              coef_map = c('fit_log_price' = "Log Price"),
@@ -188,7 +188,7 @@ modelsummary(list("IV" = iv7),
   kable_styling(latex_options = c("hold_position"))
 ```
 
-The IV regression from Table \@ref(tab:iv7table) shows that cigarette demand has a price elasticity of `r iv7$fit_log_price` which is inelastic. However, it is more inelastic compared to the previous regression without an instrument, suggesting that demand is even less responsive to price changes.
+The IV regression from Table \@ref(tab:iv7table) shows that cigarette demand has a price elasticity of `r format(iv7$fit_log_price, big.mark=",")` which is inelastic. However, it is more inelastic compared to the previous regression without an instrument, suggesting that demand is even less responsive to price changes.
 
 ## Question 3
 
@@ -200,7 +200,7 @@ step_one<- lm(log_price ~ tax_cpi, data = data_6)
 step_two<- lm(log_sales ~ tax_cpi, data = data_6)
 ```
 
-```{r redformtable, echo=FALSE}
+```{r redformtable, include=TRUE, eval=TRUE, echo=F}
 modelsummary(list("First Stage" = step_one, "Reduced Form" = step_two),
              title = "First Stage and Reduced Form Estimates 1970-1990",
              coef_map = c('tax_cpi'="Log Tax"),
@@ -236,7 +236,7 @@ step_one_9<- lm(log_price ~ tax_cpi, data = data_9)
 step_two_9<- lm(log_sales ~ tax_cpi, data = data_9)
 ```
 
-```{r reg9table, echo=FALSE}
+```{r reg9table, include=TRUE, eval=TRUE, echo=F}
 modelsummary(list("OLS" = reg9, "IV" = iv9),
              title = "Elasticity Estimates 1991-2015",
              coef_map = c('log_price'="Log Price",
@@ -247,7 +247,7 @@ modelsummary(list("OLS" = reg9, "IV" = iv9),
   kable_styling(latex_options = c("hold_position"))
 ```
 
-```{r redformtab9, echo=FALSE}
+```{r redformtab9, include=TRUE, eval=TRUE, echo=F}
 modelsummary(list("First Stage" = step_one_9, "Reduced Form" = step_two_9),
              title = "First Stage and Reduced Form Estimates 1991-2015",
              coef_map = c('tax_cpi'="Log Tax"),
@@ -261,7 +261,7 @@ modelsummary(list("First Stage" = step_one_9, "Reduced Form" = step_two_9),
 
 The results from all the ATE questions are presented in Table \@ref(tab:coefftable) and \@ref(tab:coefftab2).The results from regression of log sales on log prices from 1991-2015 show an elasticity of `r reg9$log_sales` which is more elastic compared to the results from 1970-1990. The IV regression for 1991-2015 show an elasticity of `r iv9$fit_log_price` which is elastic. These results indicate that the overall demand for cigarettes have become more elastic in 1991 to 2015 compared to in 1970-1990, indicating a greater responsiveness in quantity demanded due to a change in price. 
 
-```{r coefftable, echo=F}
+```{r coefftable, include=TRUE, eval=TRUE, echo=F}
 modelsummary(list("OLS" = reg6, "IV" = iv7, "OLS" = reg9, "IV" = iv9),
              title = "Elasticity Estimates",
              coef_map = c('log_price'="Log Price",
@@ -274,7 +274,7 @@ modelsummary(list("OLS" = reg6, "IV" = iv7, "OLS" = reg9, "IV" = iv9),
           
 ```
 
-```{r coefftab2, echo=F}
+```{r coefftab2, include=TRUE, eval=TRUE, echo=F}
 modelsummary(list("First Stage" = step_one, "Reduced Form" = step_two, "First Stage" = step_one_9, "Reduced Form" = step_two_9),
              title = "First Stage and Reduced Form Estimates",
              coef_map = c('tax_cpi'="Log Tax"),
