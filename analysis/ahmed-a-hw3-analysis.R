@@ -77,14 +77,15 @@ fig_4
 
 #5
 
-data_5 <- merge(tab_3, tab_4, by = "Year")
+tab_3_2 <- tab_3 %>% group_by(Year) %>% summarise_at(vars(avg_sales), list(avg_sale = mean))
+tab_4_2 <- tab_4 %>% group_by(Year) %>% summarise_at(vars(avg_sales), list(avg_sale = mean))
 
-fig_5 <- ggplot(data_5, aes(x = Year)) +
-  geom_line(aes(Year, avg_sales.x), colour = "red") +
-  geom_line(aes(Year, avg_sales.y), colour = "blue") +
+fig_5 <- ggplot() + 
+  geom_line(data = tab_3_2, aes(x = Year, y = avg_sale), colour = "blue") +
+  geom_line(data = tab_4_2, aes(x = Year, y = avg_sale), colour = "red") +
   labs(title = "Average Sales in States with Highest and Lowest Tax Increase", x = "Year", y = "Average Sales per Capita") +
-  annotate("text", x = 2016, y = 7.2, label = "Top 5 States", colour = "black", size = 3) +
-  annotate("text", x = 2016, y = 9.2, label = "Bottom 5 States", colour = "black", size = 3) +
+  annotate("text", x = 2016, y = 10.2, label = "Top 5 States", colour = "black", size = 3) +
+  annotate("text", x = 2016, y = 50.2, label = "Bottom 5 States", colour = "black", size = 3) +
   theme_bw()
 
 fig_5
