@@ -160,7 +160,7 @@ data_6$log_price <- log(data_6$price_cpi)
 reg6<- lm(formula = log_sales ~ log_price, data = data_6)
 ```
 
-```{r reg6table, echo=FALSE}
+```{r, include=FALSE}
 reg6table<- modelsummary(list("OLS" = reg6),
              title = "Elasticity Estimates 1970-1990",
              coef_map = c('log_price' = "Log Price"),
@@ -181,7 +181,7 @@ The regression from Table \@ref(tab:reg6table) shows that cigarette demand has a
 iv7 <- feols(log_sales ~ 1 | log_price ~ tax_cpi, data = data_6)
 ```
 
-```{r iv7table, echo=F}
+```{r, include=FALSE}
 iv7table<- modelsummary(list("IV" = iv7),
              title = "Elasticity Estimates 1970-1990",
              coef_map = c('fit_log_price' = "Log Price"),
@@ -208,7 +208,7 @@ step_one<- lm(log_price ~ tax_cpi, data = data_6)
 step_two<- lm(log_sales ~ tax_cpi, data = data_6)
 ```
 
-```{r redformtable, echo=F}
+```{r, include=FALSE}
 redformtable<- modelsummary(list("First Stage" = step_one, "Reduced Form" = step_two),
              title = "First Stage and Reduced Form Estimates 1970-1990",
              coef_map = c('tax_cpi'="Log Tax"),
@@ -247,7 +247,7 @@ step_one_9<- lm(log_price ~ tax_cpi, data = data_9)
 step_two_9<- lm(log_sales ~ tax_cpi, data = data_9)
 ```
 
-```{r reg9table, echo=F}
+```{r, include=FALSE}
 reg9table<- modelsummary(list("OLS" = reg9, "IV" = iv9),
              title = "Elasticity Estimates 1991-2015",
              coef_map = c('log_price'="Log Price",
@@ -261,7 +261,7 @@ reg9table<- modelsummary(list("OLS" = reg9, "IV" = iv9),
 reg9table
 ```
 
-```{r redformtab9, echo=F}
+```{r, include=FALSE}
 redformtab9<- modelsummary(list("First Stage" = step_one_9, "Reduced Form" = step_two_9),
              title = "First Stage and Reduced Form Estimates 1991-2015",
              coef_map = c('tax_cpi'="Log Tax"),
@@ -278,7 +278,7 @@ redformtab9
 
 The results from all the ATE questions are presented in Table \@ref(tab:coefftable) and \@ref(tab:coefftab2).The results from regression of log sales on log prices from 1991-2015 show an elasticity of `r round(reg9$coefficients[2],3)` which is more elastic compared to the results from 1970-1990. The IV regression for 1991-2015 show an elasticity of `r round(iv9$coefficients[2],3)` which is elastic. These results indicate that the overall demand for cigarettes have become more elastic in 1991 to 2015 compared to in 1970-1990, indicating a greater responsiveness in quantity demanded due to a change in price. 
 
-```{r coefftable, echo=F}
+```{r, include=FALSE}
 coefftable<- modelsummary(list("OLS" = reg6, "IV" = iv7, "OLS" = reg9, "IV" = iv9),
              title = "Elasticity Estimates",
              coef_map = c('log_price'="Log Price",
@@ -294,7 +294,7 @@ coefftable<- modelsummary(list("OLS" = reg6, "IV" = iv7, "OLS" = reg9, "IV" = iv
 coefftable
 ```
 
-```{r coefftab2, echo=F}
+```{r, include=FALSE}
 coefftab2<- modelsummary(list("First Stage" = step_one, "Reduced Form" = step_two, "First Stage" = step_one_9, "Reduced Form" = step_two_9),
              title = "First Stage and Reduced Form Estimates",
              coef_map = c('tax_cpi'="Log Tax"),
