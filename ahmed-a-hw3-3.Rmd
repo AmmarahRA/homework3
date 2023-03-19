@@ -173,7 +173,7 @@ reg6table<- modelsummary(list("OLS" = reg6),
 reg6table
 ```
 
-The regression from Table \@ref(tab:reg6table) shows that cigarette demand has an elasticity of `r round(reg6$coefficients[2],3)` , which is inelestic, suggesting that cigarette demand is less responsive to changes in price.
+The regression from shows that cigarette demand has an elasticity of `r round(reg6$coefficients[2],3)` , which is inelestic, suggesting that cigarette demand is less responsive to changes in price.
 
 ## Question 2
 
@@ -194,7 +194,7 @@ iv7table<- modelsummary(list("IV" = iv7),
 iv7table
 ```
 
-The IV regression from Table \@ref(tab:iv7table) shows that cigarette demand has a price elasticity of `r round(iv7$coefficients[2],3)` which is inelastic. However, it is more inelastic compared to the previous regression without an instrument, suggesting that demand is even less responsive to price changes.
+The IV regression from shows that cigarette demand has a price elasticity of `r round(iv7$coefficients[2],3)` which is inelastic. However, it is more inelastic compared to the previous regression without an instrument, suggesting that demand is even less responsive to price changes.
 
 \newpage 
 
@@ -276,7 +276,7 @@ redformtab9
 
 ## Question 5
 
-The results from all the ATE questions are presented in Table \@ref(tab:coefftable) and \@ref(tab:coefftab2).The results from regression of log sales on log prices from 1991-2015 show an elasticity of `r round(reg9$coefficients[2],3)` which is more elastic compared to the results from 1970-1990. The IV regression for 1991-2015 show an elasticity of `r round(iv9$coefficients[2],3)` which is elastic. These results indicate that the overall demand for cigarettes have become more elastic in 1991 to 2015 compared to in 1970-1990, indicating a greater responsiveness in quantity demanded due to a change in price. 
+The results from all the ATE questions are presented in the tables below.The results from regression of log sales on log prices from 1991-2015 show an elasticity of `r round(reg9$coefficients[2],3)` which is more elastic compared to the results from 1970-1990. The IV regression for 1991-2015 show an elasticity of `r round(iv9$coefficients[2],3)` which is elastic. These results indicate that the overall demand for cigarettes have become more elastic in 1991 to 2015 compared to in 1970-1990, indicating a greater responsiveness in quantity demanded due to a change in price. 
 
 ```{r, include=FALSE}
 coefftable<- modelsummary(list("OLS" = reg6, "IV" = iv7, "OLS" = reg9, "IV" = iv9),
