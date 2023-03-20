@@ -146,6 +146,8 @@ fig_5
 
 A graph showing the average sale of cigarettes in the 5 with states with highest and lowest tax change is shown in \@ref(fig:avgsales). It shows the states with the highest change in tax had a more drastic fall in average sales between 1970 and 2018 compared to the states with the lowest change in tax. The average sales of cigarettes in the top 5 states is lower than the average sale in the bottom 5 states from the late 1970s onwards. 
 
+\newpage
+
 # Estimate ATEs
 
 ## Question 1 
