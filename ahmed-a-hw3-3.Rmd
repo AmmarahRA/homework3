@@ -49,9 +49,11 @@ fig_1<- final.data %>% group_by(Year) %>% filter(Year <=1985) %>%
   theme_bw()
 ```
 
-```{r fig_1, echo=FALSE, fig.cap="Proportion of States with Change in Tax, 1970-1985"}
+```{r fig1, include=T, eval=T, echo=F, fig.cap="Proportion of States with Change in Tax, 1970-1985"}
 fig_1
 ```
+
+\newpage 
 
 ## Question 2
 
@@ -73,6 +75,8 @@ fig_2 <- ggplot(tab_2, aes(x = Year)) +
 ```{r avgtaxprice, include=T, eval=T, echo=F, fig.cap="Average Price and Tax"}
 fig_2
 ```
+
+\newpage 
 
 ## Question 3
 
@@ -98,9 +102,11 @@ fig_3 <- ggplot(tab_3, aes(Year, avg_sales))+
   theme_bw()
 ```
 
-```{r}
+```{r avgsalesh, include=T, eval=T, echo=F, fig.cap="Average Sales per Capita for States with Highest Price Increase"}
 fig_3
 ```
+
+\newpage
 
 ## Question 4
 
@@ -120,9 +126,11 @@ fig_4 <- ggplot(tab_4, aes(Year, avg_sales))+
   theme_bw()
 ```
 
-```{r}
+```{r avgsalesl, include=T, eval=T, echo=F, fig.cap="Average Sales per Capita for States with Lowest Price Increase"}
 fig_4
 ```
+
+\newpage
 
 ## Question 5
 
@@ -134,17 +142,17 @@ tab_4_2 <- tab_4 %>% group_by(Year) %>% summarise_at(vars(avg_sales), list(avg_s
 fig_5 <- ggplot() + 
   geom_line(data = tab_3_2, aes(x = Year, y = avg_sale), colour = "blue") +
   geom_line(data = tab_4_2, aes(x = Year, y = avg_sale), colour = "red") +
-  labs(title = "Average Sales in States with Highest and Lowest Tax Increase", x = "Year", y = "Average Sales per Capita") +
-  annotate("text", x = 2016, y = 10.2, label = "Top 5 States", colour = "black", size = 3) +
-  annotate("text", x = 2016, y = 50.2, label = "Bottom 5 States", colour = "black", size = 3) +
+  labs(title = "Average Sales in States with Highest and Lowest Price Increase", x = "Year", y = "Average Sales per Capita") +
+  annotate("text", x = 2016, y = 10, label = "Highest Price Increase", colour = "black", size = 3) +
+  annotate("text", x = 2016, y = 50, label = "Lowest Price Increase", colour = "black", size = 3) +
   theme_bw()
 ```
 
-```{r avgsales, include=T, eval=T, echo=F, fig.cap="Average Sales in Top and Bottom States"}
+```{r avgsales, include=T, eval=T, echo=F, fig.cap="Average Sales in States with Highest and Lowest Price Increase"}
 fig_5
 ```
 
-A graph showing the average sale of cigarettes in the 5 with states with highest and lowest tax change is shown in Figure \@ref(fig:avgsales). It shows the states with the highest change in tax had a more drastic fall in average sales between 1970 and 2018 compared to the states with the lowest change in tax. The average sales of cigarettes in the top 5 states is lower than the average sale in the bottom 5 states from the late 1970s onwards. 
+A graph showing the average sale of cigarettes in the 5 with states with highest and lowest price change is shown in Figure \@ref(fig:avgsales). It shows the states with the highest change in price had a more drastic fall in average sales between 1970 and 2018 compared to the states with the lowest change in price. The average sales of cigarettes in the top 5 states is lower than the average sale in the bottom 5 states from the late 1970s onwards. 
 
 \newpage
 
@@ -193,7 +201,6 @@ modelsummary(list("IV" = iv7),
 
 The IV regression in Table \@ref(tab:iv7table) shows that cigarette demand has a price elasticity of `r round(iv7$coefficients[2],3)` which is inelastic. However, it is more inelastic compared to the previous regression without an instrument, suggesting that demand is even less responsive to price changes. While the elasticity estimates in the OLS and IV regression are not very different, there is a difference which could be due to either the OLS or IV estimate being biased. OLS could be biased due to omitted variable bias while IV could be biased due to the violation of exclusion restriction or finite sample size. Also, the OLS estimates are a result of variations across all the variables while IV estimates are a result of variation in the instrument i.e tax prices which does not vary as much in this time period as shown in \@ref(fig:avgtaxprice).
 
-\newpage 
 
 ## Question 3
 
@@ -214,6 +221,8 @@ modelsummary(list("First Stage" = step_one, "Reduced Form" = step_two),
             output = "kableExtra") %>% 
   kable_styling(latex_options = c("hold_position"))
 ```
+
+\newpage 
 
 ## Question 4
 
@@ -278,8 +287,6 @@ modelsummary(list("OLS" = reg6, "IV" = iv7, "OLS" = reg9, "IV" = iv9),
   add_header_above(c(" " = 1, "1970 - 1990" = 2, "1991 - 2015" = 2)) %>%
   kable_styling(latex_options = c("hold_position"))
 ```
-
-
 ```{r coeftab2, include=T, eval=T, echo=F}
 modelsummary(list("First Stage" = step_one, "Reduced Form" = step_two, "First Stage" = step_one_9, "Reduced Form" = step_two_9),
              title = "First Stage and Reduced Form Estimates",
