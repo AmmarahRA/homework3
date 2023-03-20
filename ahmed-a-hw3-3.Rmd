@@ -278,8 +278,8 @@ redformtab9
 
 The results from all the ATE questions are presented in the tables below.The results from regression of log sales on log prices from 1991-2015 show an elasticity of `r round(reg9$coefficients[2],3)` which is more elastic compared to the results from 1970-1990. The IV regression for 1991-2015 show an elasticity of `r round(iv9$coefficients[2],3)` which is elastic. These results indicate that the overall demand for cigarettes have become more elastic in 1991 to 2015 compared to in 1970-1990, indicating a greater responsiveness in quantity demanded due to a change in price. 
 
-```{r, include=FALSE}
-coefftable<- modelsummary(list("OLS" = reg6, "IV" = iv7, "OLS" = reg9, "IV" = iv9),
+```{r coeftable, include=T, eval=T, echo=F}
+modelsummary(list("OLS" = reg6, "IV" = iv7, "OLS" = reg9, "IV" = iv9),
              title = "Elasticity Estimates",
              coef_map = c('log_price'="Log Price",
                           'fit_log_price' = "Log Price"),
@@ -288,14 +288,11 @@ coefftable<- modelsummary(list("OLS" = reg6, "IV" = iv7, "OLS" = reg9, "IV" = iv
             output = "kableExtra") %>% 
   add_header_above(c(" " = 1, "1970 - 1990" = 2, "1991 - 2015" = 2)) %>%
   kable_styling(latex_options = c("hold_position"))
-          
-```
-```{r coefftable, echo=F}
-coefftable
 ```
 
-```{r, include=FALSE}
-coefftab2<- modelsummary(list("First Stage" = step_one, "Reduced Form" = step_two, "First Stage" = step_one_9, "Reduced Form" = step_two_9),
+
+```{r coeftab2, include=T, eval=T, echo=F}
+modelsummary(list("First Stage" = step_one, "Reduced Form" = step_two, "First Stage" = step_one_9, "Reduced Form" = step_two_9),
              title = "First Stage and Reduced Form Estimates",
              coef_map = c('tax_cpi'="Log Tax"),
              gof_map = list(list("raw" = "nobs", "clean"="N", "fmt" = 0),
@@ -303,8 +300,5 @@ coefftab2<- modelsummary(list("First Stage" = step_one, "Reduced Form" = step_tw
             output = "kableExtra") %>% 
   add_header_above(c(" " = 1, "1970 - 1990" = 2, "1991 - 2015" = 2)) %>%
   kable_styling(latex_options = c("hold_position"))
-```
-```{r coefftab2, echo=F}
-coefftab2
 ```
 
