@@ -1,14 +1,13 @@
 ---
 title: "Homework 3 - Research in Health Economics"
 author: "Ammarah Ahmed"
-date: ''
-output:
-  pdf_document:
-    toc: no
+date: ""
+header-includes:
+  - \usepackage{booktabs}
+output: 
   bookdown::pdf_document2:
     fig_caption: yes
-    toc: no
-header-includes: \usepackage{booktabs}
+    toc: false
 ---
 
 ```{r setup, include=FALSE}
@@ -141,9 +140,11 @@ fig_5 <- ggplot() +
   theme_bw()
 ```
 
-```{r}
+```{r avgsales, include=T, eval=T, echo=F, fig.cap="Average Sales in Top and Bottom States"}
 fig_5
 ```
+
+A graph showing the average sale of cigarettes in the 5 with states with highest and lowest tax change is shown in \@ref(fig:avgsales). It shows the states with the highest change in tax had a more drastic fall in average sales between 1970 and 2018 compared to the states with the lowest change in tax. The average sales of cigarettes in the top 5 states is lower than the average sale in the bottom 5 states from the late 1970s onwards. 
 
 # Estimate ATEs
 
@@ -160,8 +161,8 @@ data_6$log_price <- log(data_6$price_cpi)
 reg6<- lm(formula = log_sales ~ log_price, data = data_6)
 ```
 
-```{r, include=FALSE}
-reg6table<- modelsummary(list("OLS" = reg6),
+```{r reg6table, include=T, eval=T, echo=F}
+modelsummary(list("OLS" = reg6),
              title = "Elasticity Estimates 1970-1990",
              coef_map = c('log_price' = "Log Price"),
              gof_map = list(list("raw" = "nobs", "clean"="N", "fmt" = 0),
@@ -169,11 +170,8 @@ reg6table<- modelsummary(list("OLS" = reg6),
              output = "kableExtra") %>%
   kable_styling(latex_options = c("hold_position"))
 ```
-```{r reg6table, echo=FALSE}
-reg6table
-```
 
-The regression shows that cigarette demand has an elasticity of `r round(reg6$coefficients[2],3)` , which is inelestic, suggesting that cigarette demand is less responsive to changes in price.
+The regression in Table \@ref(tab:reg6table) shows that cigarette demand has an elasticity of `r round(reg6$coefficients[2],3)` , which is inelestic, suggesting that cigarette demand is less responsive to changes in price.
 
 ## Question 2
 
@@ -181,8 +179,8 @@ The regression shows that cigarette demand has an elasticity of `r round(reg6$co
 iv7 <- feols(log_sales ~ 1 | log_price ~ tax_cpi, data = data_6)
 ```
 
-```{r, include=FALSE}
-iv7table<- modelsummary(list("IV" = iv7),
+```{r iv7table, include=T, eval=T, echo=F}
+modelsummary(list("IV" = iv7),
              title = "Elasticity Estimates 1970-1990",
              coef_map = c('fit_log_price' = "Log Price"),
              gof_map = list(list("raw" = "nobs", "clean"="N", "fmt" = 0),
@@ -190,11 +188,8 @@ iv7table<- modelsummary(list("IV" = iv7),
              output = "kableExtra") %>%
   kable_styling(latex_options = c("hold_position"))
 ```
-```{r iv7table, echo=F}
-iv7table
-```
 
-The IV regression shows that cigarette demand has a price elasticity of `r round(iv7$coefficients[2],3)` which is inelastic. However, it is more inelastic compared to the previous regression without an instrument, suggesting that demand is even less responsive to price changes.
+The IV regression in Table \@ref(tab:iv7table) shows that cigarette demand has a price elasticity of `r round(iv7$coefficients[2],3)` which is inelastic. However, it is more inelastic compared to the previous regression without an instrument, suggesting that demand is even less responsive to price changes.
 
 \newpage 
 
@@ -208,17 +203,14 @@ step_one<- lm(log_price ~ tax_cpi, data = data_6)
 step_two<- lm(log_sales ~ tax_cpi, data = data_6)
 ```
 
-```{r, include=FALSE}
-redformtable<- modelsummary(list("First Stage" = step_one, "Reduced Form" = step_two),
+```{r redformtab, include=T, eval=T, echo=F}
+modelsummary(list("First Stage" = step_one, "Reduced Form" = step_two),
              title = "First Stage and Reduced Form Estimates 1970-1990",
              coef_map = c('tax_cpi'="Log Tax"),
              gof_map = list(list("raw" = "nobs", "clean"="N", "fmt" = 0),
                             list("raw"="r.squared", "clean"="R2", "fmt" =2)),
             output = "kableExtra") %>% 
   kable_styling(latex_options = c("hold_position"))
-```
-```{r redformtable, echo=F}
-redformtable
 ```
 
 ## Question 4
@@ -247,8 +239,8 @@ step_one_9<- lm(log_price ~ tax_cpi, data = data_9)
 step_two_9<- lm(log_sales ~ tax_cpi, data = data_9)
 ```
 
-```{r, include=FALSE}
-reg9table<- modelsummary(list("OLS" = reg9, "IV" = iv9),
+```{r reg9table, include=T, eval=T, echo=F}
+modelsummary(list("OLS" = reg9, "IV" = iv9),
              title = "Elasticity Estimates 1991-2015",
              coef_map = c('log_price'="Log Price",
                           'fit_log_price' = "Log Price"),
@@ -257,12 +249,10 @@ reg9table<- modelsummary(list("OLS" = reg9, "IV" = iv9),
             output = "kableExtra") %>% 
   kable_styling(latex_options = c("hold_position"))
 ```
-```{r reg9table, echo=F}
-reg9table
-```
 
-```{r, include=FALSE}
-redformtab9<- modelsummary(list("First Stage" = step_one_9, "Reduced Form" = step_two_9),
+
+```{r redformtab9, include=T, eval=T, echo=F}
+modelsummary(list("First Stage" = step_one_9, "Reduced Form" = step_two_9),
              title = "First Stage and Reduced Form Estimates 1991-2015",
              coef_map = c('tax_cpi'="Log Tax"),
              gof_map = list(list("raw" = "nobs", "clean"="N", "fmt" = 0),
@@ -270,13 +260,10 @@ redformtab9<- modelsummary(list("First Stage" = step_one_9, "Reduced Form" = ste
             output = "kableExtra") %>% 
   kable_styling(latex_options = c("hold_position"))
 ```
-```{r redformtab9, echo=F}
-redformtab9
-```
 
 ## Question 5
 
-The results from all the ATE questions are presented in the tables below.The results from regression of log sales on log prices from 1991-2015 show an elasticity of `r round(reg9$coefficients[2],3)` which is more elastic compared to the results from 1970-1990. The IV regression for 1991-2015 show an elasticity of `r round(iv9$coefficients[2],3)` which is elastic. These results indicate that the overall demand for cigarettes have become more elastic in 1991 to 2015 compared to in 1970-1990, indicating a greater responsiveness in quantity demanded due to a change in price. 
+The results from all the ATE questions are presented in Table \@ref(tab:coeftable) and Table \@ref(tab:coeftab2).The results from regression of log sales on log prices from 1991-2015 show an elasticity of `r round(reg9$coefficients[2],3)` which is more elastic compared to the results from 1970-1990. The IV regression for 1991-2015 show an elasticity of `r round(iv9$coefficients[2],3)` which is elastic. These results indicate that the overall demand for cigarettes have become more elastic in 1991 to 2015 compared to in 1970-1990, indicating a greater responsiveness in quantity demanded due to a change in price. 
 
 ```{r coeftable, include=T, eval=T, echo=F}
 modelsummary(list("OLS" = reg6, "IV" = iv7, "OLS" = reg9, "IV" = iv9),
